@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>University Community Forum</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a73e8;
+            --secondary: #4285f4;
+            --accent: #34a853;
+            --light: #f8f9fa;
+            --dark: #202124;
+            --gray: #5f6368;
+            --success: #0f9d58;
+            --warning: #f4b400;
+            --danger: #db4437;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            background-color: #f5f7f9;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        nav a:hover {
+            opacity: 0.9;
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: white;
+            color: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background-color: #f0f0f0;
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Main Content */
+        .main-content {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            flex: 0 0 250px;
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+            color: var(--primary);
+        }
+
+        .categories {
+            list-style: none;
+        }
+
+        .categories li {
+            margin-bottom: 10px;
+        }
+
+        .categories a {
+            color: var(--dark);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 5px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .categories a:hover {
+            background-color: #f0f7ff;
+            color: var(--primary);
+        }
+
+        .categories i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Forum Content */
+        .forum-content {
+            flex: 1;
+        }
+
+        .welcome-banner {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .welcome-banner h2 {
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+
+        .forum-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            display: flex;
+            background: white;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .search-box input {
+            padding: 10px 15px;
+            border: none;
+            width: 300px;
+            outline: none;
+        }
+
+        .search-box button {
+            padding: 0 15px;
+            border: none;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Posts */
+        .posts {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .post {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s;
+        }
+
+        .post:hover {
+            transform: translateY(-3px);
+        }
+
+        .post-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .post-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .post-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .post-info span {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .post-category {
+            background: #e8f0fe;
+            color: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .post-content {
+            margin-bottom: 15px;
+        }
+
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            padding-top: 15px;
+        }
+
+        .post-stats {
+            display: flex;
+            gap: 15px;
+        }
+
+        .post-stats span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            margin-top: 30px;
+        }
+
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .chat-messages {
+            height: 250px;
+            overflow-y: auto;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 4px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 8px 12px;
+            border-radius: 18px;
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+
+        .message.received {
+            background: #e8f0fe;
+            border-top-left-radius: 4px;
+            margin-right: auto;
+        }
+
+        .message.sent {
+            background: #34a853;
+            color: white;
+            border-top-right-radius: 4px;
+            margin-left: auto;
+        }
+
+        .message-sender {
+            font-weight: bold;
+            margin-bottom: 3px;
+            font-size: 0.9rem;
+        }
+
+        .chat-input {
+            display: flex;
+            gap: 10px;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            outline: none;
+        }
+
+        .chat-input button {
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .footer-section {
+            flex: 1;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 8px;
+        }
+
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 1;
+            }
+            
+            .search-box input {
+                width: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .forum-actions {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>University Forum</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">Discussions</a></li>
+                        <li><a href="#">Events</a></li>
+                        <li><a href="#">Resources</a></li>
+                        <li><a href="#">About</a></li>
+                    </ul>
+                </nav>
+                <div class="user-actions">
+                    <button class="btn btn-outline">Log In</button>
+                    <button class="btn btn-primary">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="main-content">
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <h3>Categories</h3>
+                <ul class="categories">
+                    <li><a href="#"><i class="fas fa-book"></i> Academics</a></li>
+                    <li><a href="#"><i class="fas fa-home"></i> Campus Life</a></li>
+                    <li><a href="#"><i class="fas fa-briefcase"></i> Career Development</a></li>
+                    <li><a href="#"><i class="fas fa-users"></i> Student Organizations</a></li>
+                    <li><a href="#"><i class="fas fa-calendar"></i> Events</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> Questions & Answers</a></li>
+                    <li><a href="#"><i class="fas fa-hands-helping"></i> Housing & Rentals</a></li>
+                    <li><a href="#"><i class="fas fa-comments"></i> General Discussion</a></li>
+                </ul>
+            </div>
+
+            <!-- Forum Content -->
+            <div class="forum-content">
+                <div class="welcome-banner">
+                    <h2>Welcome to University Community Forum</h2>
+                    <p>Connect, share, and collaborate with students and faculty</p>
+                </div>
+
+                <div class="forum-actions">
+                    <button class="btn btn-primary"><i class="fas fa-plus"></i> New Post</button>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search discussions...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+
+                <div class="posts">
+                    <!-- Post 1 -->
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <div class="avatar">JS</div>
+                                <div class="post-info">
+                                    <h3>John Smith</h3>
+                                    <span>2 hours ago</span>
+                                </div>
+                            </div>
+                            <div class="post-category">Academics</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Best practices for preparing for final exams?</h3>
+                            <p>I'm struggling to find an effective study routine for my upcoming finals. What strategies have worked best for you all? Any tips for managing time and reducing stress?</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span><i class="far fa-comment"></i> 24</span>
+                                <span><i class="far fa-heart"></i> 42</span>
+                                <span><i class="far fa-bookmark"></i> Save</span>
+                            </div>
+                            <a href="#">Read More →</a>
+                        </div>
+                    </div>
+
+                    <!-- Post 2 -->
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <div class="avatar">SD</div>
+                                <div class="post-info">
+                                    <h3>Sarah Davis</h3>
+                                    <span>Yesterday</span>
+                                </div>
+                            </div>
+                            <div class="post-category">Events</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Spring Festival this weekend - Volunteers needed!</h3>
+                            <p>The annual Spring Festival is happening this Saturday at the University Park. We need volunteers to help with setup, coordination, and cleanup. Free food and t-shirts for volunteers!</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span><i class="far fa-comment"></i> 18</span>
+                                <span><i class="far fa-heart"></i> 35</span>
+                                <span><i class="far fa-bookmark"></i> Save</span>
+                            </div>
+                            <a href="#">Read More →</a>
+                        </div>
+                    </div>
+
+                    <!-- Post 3 -->
+                    <div class="post">
+                        <div class="post-header">
+                            <div class="post-author">
+                                <div class="avatar">PT</div>
+                                <div class="post-info">
+                                    <h3>Prof. Thompson</h3>
+                                    <span>2 days ago</span>
+                                </div>
+                            </div>
+                            <div class="post-category">Career Development</div>
+                        </div>
+                        <div class="post-content">
+                            <h3>Summer internship opportunities at TechCorp</h3>
+                            <p>TechCorp has reached out to our department with several paid internship positions for this summer. I'll be hosting an info session this Thursday at 3 PM in the Business Building room 204.</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-stats">
+                                <span><i class="far fa-comment"></i> 32</span>
+                                <span><i class="far fa-heart"></i> 28</span>
+                                <span><i class="far fa-bookmark"></i> Save</span>
+                            </div>
+                            <a href="#">Read More →</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chat Section -->
+                <div class="chat-section">
+                    <div class="chat-header">
+                        <h3><i class="fas fa-comments"></i> Community Chat</h3>
+                        <span>Online: 124 users</span>
+                    </div>
+                    <div class="chat-messages">
+                        <div class="message received">
+                            <div class="message-sender">Alex Johnson:</div>
+                            <div>Has anyone taken the Advanced Algorithms class with Professor Miller?</div>
+                        </div>
+                        <div class="message sent">
+                            <div class="message-sender">You:</div>
+                            <div>I took it last semester. It's challenging but really rewarding!</div>
+                        </div>
+                        <div class="message received">
+                            <div class="message-sender">Maria Garcia:</div>
+                            <div>I'm currently in it. The assignments are tough but the lectures are great.</div>
+                        </div>
+                        <div class="message received">
+                            <div class="message-sender">Campus Info:</div>
+                            <div>Reminder: Library will have extended hours during finals week.</div>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" placeholder="Type your message...">
+                        <button>Send</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>University Forum</h3>
+                    <p>Connecting students, faculty, and staff for a collaborative campus community.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Forum Guidelines</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Resources</h3>
+                    <ul>
+                        <li><a href="#">Academic Calendar</a></li>
+                        <li><a href="#">Campus Map</a></li>
+                        <li><a href="#">Student Services</a></li>
+                        <li><a href="#">IT Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 University Community Forum. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Chat functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.querySelector('.chat-messages');
+            const chatInput = document.querySelector('.chat-input input');
+            const sendButton = document.querySelector('.chat-input button');
+            
+            // Function to add a new message to the chat
+            function addMessage(content, isSent = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message');
+                messageDiv.classList.add(isSent ? 'sent' : 'received');
+                
+                const senderDiv = document.createElement('div');
+                senderDiv.classList.add('message-sender');
+                senderDiv.textContent = isSent ? 'You:' : 'New User:';
+                
+                const contentDiv = document.createElement('div');
+                contentDiv.textContent = content;
+                
+                messageDiv.appendChild(senderDiv);
+                messageDiv.appendChild(contentDiv);
+                
+                chatMessages.appendChild(messageDiv);
+                
+                // Scroll to the bottom of the chat
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+            
+            // Send message when button is clicked
+            sendButton.addEventListener('click', function() {
+                if (chatInput.value.trim() !== '') {
+                    addMessage(chatInput.value, true);
+                    chatInput.value = '';
+                    
+                    // Simulate a response after a short delay
+                    setTimeout(function() {
+                        const responses = [
+                            "That's interesting!",
+                            "I agree with that.",
+                            "Thanks for sharing!",
+                            "Can you tell me more?",
+                            "Has anyone else experienced this?"
+                        ];
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        addMessage(randomResponse);
+                    }, 1000);
+                }
+            });
+            
+            // Send message when Enter key is pressed
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendButton.click();
+                }
+            });
+            
+            // Simulate receiving occasional messages
+            setInterval(function() {
+                if (Math.random() > 0.7) {
+                    const messages = [
+                        "Does anyone know when the cafeteria opens on weekends?",
+                        "Looking for a study group for Chemistry 101!",
+                        "There's a great workshop on resume building tomorrow.",
+                        "Has anyone found a good spot to study quietly?",
+                        "The basketball team won their game last night!"
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    addMessage(randomMessage);
+                }
+            }, 15000);
+        });
+    </script>
+</body>
+</html>
